@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:cta-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -6286,10 +6285,10 @@ Wire Wire Line
 	-3300 2900 -3600 2900
 Connection ~ -3600 2900
 $Comp
-L Device:C Cub17
+L Device:C Cua11
 U 1 1 60D7259A
 P -3500 -650
-F 0 "Cub17" H -3385 -604 50  0000 L CNN
+F 0 "Cua11" H -3385 -604 50  0000 L CNN
 F 1 "100n" H -3385 -695 50  0000 L CNN
 F 2 "Capacitor_THT:C_Rect_L7.2mm_W3.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2" H -3462 -800 50  0001 C CNN
 F 3 "~" H -3500 -650 50  0001 C CNN
