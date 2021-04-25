@@ -184,7 +184,7 @@ U 1 1 60824F0B
 P 600 2650
 F 0 "Jw1" H 518 2867 50  0000 C CNN
 F 1 "Conn_01x02" H 518 2776 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 600 2650 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 600 2650 50  0001 C CNN
 F 3 "~" H 600 2650 50  0001 C CNN
 	1    600  2650
 	-1   0    0    -1  
@@ -535,7 +535,7 @@ U 1 1 609EF5BD
 P 4200 2050
 F 0 "Jw2" H 4118 2267 50  0000 C CNN
 F 1 "Conn_01x02" H 4118 2176 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 4200 2050 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4200 2050 50  0001 C CNN
 F 3 "~" H 4200 2050 50  0001 C CNN
 	1    4200 2050
 	-1   0    0    -1  
@@ -888,7 +888,7 @@ U 1 1 60A781E9
 P 7750 1500
 F 0 "Jw3" H 7668 1717 50  0000 C CNN
 F 1 "Conn_01x02" H 7668 1626 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 7750 1500 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 7750 1500 50  0001 C CNN
 F 3 "~" H 7750 1500 50  0001 C CNN
 	1    7750 1500
 	-1   0    0    -1  
@@ -1241,7 +1241,7 @@ U 1 1 60AD60BC
 P 11800 1000
 F 0 "Jw4" H 11718 1217 50  0000 C CNN
 F 1 "Conn_01x02" H 11718 1126 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 11800 1000 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 11800 1000 50  0001 C CNN
 F 3 "~" H 11800 1000 50  0001 C CNN
 	1    11800 1000
 	-1   0    0    -1  
@@ -1694,7 +1694,7 @@ U 1 1 60B2940E
 P 15950 600
 F 0 "Jw5" H 15868 817 50  0000 C CNN
 F 1 "Conn_01x02" H 15868 726 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 15950 600 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 15950 600 50  0001 C CNN
 F 3 "~" H 15950 600 50  0001 C CNN
 	1    15950 600 
 	-1   0    0    -1  
@@ -2058,7 +2058,7 @@ U 1 1 60CBE17D
 P 16200 3800
 F 0 "Jw6" H 16118 4017 50  0000 C CNN
 F 1 "Conn_01x02" H 16118 3926 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 16200 3800 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 16200 3800 50  0001 C CNN
 F 3 "~" H 16200 3800 50  0001 C CNN
 	1    16200 3800
 	-1   0    0    -1  
@@ -2420,7 +2420,7 @@ U 1 1 60E02BB1
 P 20250 200
 F 0 "Jw7" H 20168 417 50  0000 C CNN
 F 1 "Conn_01x02" H 20168 326 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 20250 200 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 20250 200 50  0001 C CNN
 F 3 "~" H 20250 200 50  0001 C CNN
 	1    20250 200 
 	-1   0    0    -1  
@@ -2784,7 +2784,7 @@ U 1 1 60F25526
 P 20050 3200
 F 0 "Jw8" H 19968 3417 50  0000 C CNN
 F 1 "Conn_01x02" H 19968 3326 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 20050 3200 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 20050 3200 50  0001 C CNN
 F 3 "~" H 20050 3200 50  0001 C CNN
 	1    20050 3200
 	-1   0    0    -1  
@@ -3148,7 +3148,7 @@ U 1 1 61088046
 P -6000 6600
 F 0 "Jw9" H -6082 6817 50  0000 C CNN
 F 1 "Conn_01x02" H -6082 6726 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H -6000 6600 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H -6000 6600 50  0001 C CNN
 F 3 "~" H -6000 6600 50  0001 C CNN
 	1    -6000 6600
 	-1   0    0    -1  
@@ -3512,7 +3512,7 @@ U 1 1 611A6A01
 P -5600 3100
 F 0 "Jw10" H -5682 3317 50  0000 C CNN
 F 1 "Conn_01x02" H -5682 3226 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H -5600 3100 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H -5600 3100 50  0001 C CNN
 F 3 "~" H -5600 3100 50  0001 C CNN
 	1    -5600 3100
 	-1   0    0    -1  
@@ -3876,7 +3876,7 @@ U 1 1 612002C6
 P -5800 -600
 F 0 "Jw11" H -5882 -383 50  0000 C CNN
 F 1 "Conn_01x02" H -5882 -474 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H -5800 -600 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H -5800 -600 50  0001 C CNN
 F 3 "~" H -5800 -600 50  0001 C CNN
 	1    -5800 -600
 	-1   0    0    -1  
@@ -4238,7 +4238,7 @@ U 1 1 61278336
 P -650 -1500
 F 0 "Jw12" H -732 -1283 50  0000 C CNN
 F 1 "Conn_01x02" H -732 -1374 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H -650 -1500 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H -650 -1500 50  0001 C CNN
 F 3 "~" H -650 -1500 50  0001 C CNN
 	1    -650 -1500
 	-1   0    0    -1  
@@ -4591,7 +4591,7 @@ U 1 1 612F9F03
 P 3800 -1700
 F 0 "Jw13" H 3718 -1483 50  0000 C CNN
 F 1 "Conn_01x02" H 3718 -1574 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 3800 -1700 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 3800 -1700 50  0001 C CNN
 F 3 "~" H 3800 -1700 50  0001 C CNN
 	1    3800 -1700
 	-1   0    0    -1  
@@ -4955,7 +4955,7 @@ U 1 1 6140EE85
 P 8250 -2600
 F 0 "Jw14" H 8168 -2383 50  0000 C CNN
 F 1 "Conn_01x02" H 8168 -2474 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 8250 -2600 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 8250 -2600 50  0001 C CNN
 F 3 "~" H 8250 -2600 50  0001 C CNN
 	1    8250 -2600
 	-1   0    0    -1  
@@ -5319,7 +5319,7 @@ U 1 1 614C4949
 P 12800 -2650
 F 0 "Jw15" H 12718 -2433 50  0000 C CNN
 F 1 "Conn_01x02" H 12718 -2524 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 12800 -2650 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 12800 -2650 50  0001 C CNN
 F 3 "~" H 12800 -2650 50  0001 C CNN
 	1    12800 -2650
 	-1   0    0    -1  
@@ -5696,7 +5696,7 @@ U 1 1 615C156F
 P 17250 -3050
 F 0 "Jw16" H 17168 -2833 50  0000 C CNN
 F 1 "Conn_01x02" H 17168 -2924 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 17250 -3050 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 17250 -3050 50  0001 C CNN
 F 3 "~" H 17250 -3050 50  0001 C CNN
 	1    17250 -3050
 	-1   0    0    -1  
@@ -6447,4 +6447,42 @@ $EndComp
 Wire Wire Line
 	19550 -3250 19250 -3250
 Connection ~ 19250 -3250
+$Comp
+L Device:C CI1
+U 1 1 608A539A
+P 1850 2600
+F 0 "CI1" H 1965 2646 50  0000 L CNN
+F 1 "100n" H 1965 2555 50  0000 L CNN
+F 2 "Capacitor_THT:C_Rect_L7.2mm_W3.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2" H 1888 2450 50  0001 C CNN
+F 3 "~" H 1850 2600 50  0001 C CNN
+	1    1850 2600
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1700 2600 1700 2350
+Connection ~ 1700 2350
+Wire Wire Line
+	2000 2600 2300 2600
+Wire Wire Line
+	2300 2600 2300 2250
+Connection ~ 2300 2250
+$Comp
+L Device:C CI2
+U 1 1 6098D750
+P 5450 2000
+F 0 "CI2" H 5565 2046 50  0000 L CNN
+F 1 "100n" H 5565 1955 50  0000 L CNN
+F 2 "Capacitor_THT:C_Rect_L7.2mm_W3.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2" H 5488 1850 50  0001 C CNN
+F 3 "~" H 5450 2000 50  0001 C CNN
+	1    5450 2000
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5300 2000 5300 1750
+Connection ~ 5300 1750
+Wire Wire Line
+	5600 2000 5900 2000
+Wire Wire Line
+	5900 2000 5900 1650
+Connection ~ 5900 1650
 $EndSCHEMATC
