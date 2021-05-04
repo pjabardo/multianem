@@ -30,7 +30,14 @@
 
 const MCP3208::Channel chan_id[] = {MCP3208::Channel::SINGLE_0, MCP3208::Channel::SINGLE_1, MCP3208::Channel::SINGLE_2, MCP3208::Channel::SINGLE_3,
                            MCP3208::Channel::SINGLE_4, MCP3208::Channel::SINGLE_5, MCP3208::Channel::SINGLE_6, MCP3208::Channel::SINGLE_7};
+#define _USE_WIFI_
                            
+#ifdef _USE_WIFI_
+#include "WiFi.h"
+const char *ssid = "durruti";
+const char *password = "ginzburglanda";
+#endif
+
 
 
 SPIClass spi1(VSPI);
@@ -54,14 +61,28 @@ void setup() {
   digitalWrite(SPI_CS3, HIGH);
   digitalWrite(SPI_CS4, HIGH);
 
+  // initialize SPI interface for MCP3208
+  SPISettings settings(ADC_CLK, MSBFIRST, SPI_MODE0);
+  spi1.begin(SPI_CLK1, SPI_MISO1, SPI_MOSI1, SPI_CS1);
 
   // initialize serial
   Serial.begin(115200);
 
+#ifdef _USE_WIFI_
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi ..");
+  int code;
+  code  = WiFi.status();
+  while (code != WL_CONNECTED){
+    Serial.println(code);
+    delay(1000);
+    code  = WiFi.status();
+  }
+  Serial.println(WiFi.localIP());
+  
+#endif
 
-  // initialize SPI interface for MCP3208
-  SPISettings settings(ADC_CLK, MSBFIRST, SPI_MODE0);
-  spi1.begin(SPI_CLK1, SPI_MISO1, SPI_MOSI1, SPI_CS1);
   
   spi1.beginTransaction(settings);
 
@@ -69,20 +90,26 @@ void setup() {
 }
 
 
+struct DaqFrame{
+  int32_t frame_num;
+  int32_t frame_time;
+  int32_t avg;  
+  int32_t period;
+  int32_t fps;
+  int16_t raw[32];
+};
 
-const int NSAMPLES=1;
-void loop() {
-
+void read_frame(int16_t* raw16, int32_t avg)
+{
+  int32_t raw[32];
   uint32_t t1;
   uint32_t t2;
-  // start sampling
-  Serial.println("Reading...");
+
   for (int i = 0; i < TOTAL_CHANS; ++i)
     raw[i] = 0;
-  
-  t1 = micros();
-  int *r = raw;
-  for (int k = 0; k < NSAMPLES; ++k){
+
+  for (int k = 0; k < avg; ++k){
+    int *r = raw;
     for (int i = 0; i < 8; ++i)
     {
       *r++ += adc1.read(chan_id[i]);
@@ -100,6 +127,24 @@ void loop() {
       *r++ += adc4.read(chan_id[i]);
     }
   }
+  for (int i = 0;  i < TOTAL_CHANS; ++i)
+    raw16[i] = raw[i] / avg;
+  
+}
+const int NSAMPLES=10;
+int16_t raw16[TOTAL_CHANS];
+
+void repl(){
+  
+}
+void loop() {
+
+  uint32_t t1;
+  uint32_t t2;
+  // start sampling
+  Serial.println("Reading...");
+  t1 = micros();
+  read_frame(raw16, NSAMPLES);
   t2 = micros();
 
   // get analog value
@@ -108,10 +153,7 @@ void loop() {
   {
     Serial.print(i);
     Serial.print(") ");
-    Serial.print(raw[i]/NSAMPLES);
-    Serial.print(" -> ");
-    Serial.print( (raw[i]*ADC_VREF) / (NSAMPLES * 4095) );
-    Serial.println(" mV");
+    Serial.println(raw16[i]);
     
   }
   Serial.println("");
