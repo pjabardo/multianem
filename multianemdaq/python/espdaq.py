@@ -1,7 +1,11 @@
+# -*- coding: utf-8 -*-
+
 import serial
 import time
 import numpy as np
+import argparse
 
+from xmlrpc.server import SimpleXMLRPCServer
 
 class ESPDaq(object):
 
@@ -35,7 +39,7 @@ class ESPDaq(object):
             self._avg = val
             cmd = '.A{}\n'.format(val).encode('ascii')
             self.s.write(cmd)
-            return self.s.readline()
+            return self.s.readline().decode('ascii')
     def period(self, val=None):
         if val is None:
             cmd = '?P\n'.encode('ascii')
@@ -50,7 +54,7 @@ class ESPDaq(object):
             self._period = val
             cmd = '.P{}\n'.format(val).encode('ascii')
             self.s.write(cmd)
-            return self.s.readline()
+            return self.s.readline().decode('ascii')
     def fps(self, val=None):
         if val is None:
             cmd = '?F\n'.encode('ascii')
@@ -65,7 +69,7 @@ class ESPDaq(object):
             self._fps = val
             cmd = '.F{}\n'.format(val).encode('ascii')
             self.s.write(cmd)
-            return self.s.readline()
+            return self.s.readline().decode('ascii')
      
     
     def scan_raw(self):
@@ -75,12 +79,12 @@ class ESPDaq(object):
 
         self.s.write(b'*\n')
         time.sleep(0.05)
-        head = self.s.readline()
+        head = self.s.readline().decode('ascii')
         nframes = int(self.s.readline().strip())
         for i in range(nframes):
             frames.append(self.s.read(80))
 
-        foot = self.s.readline()
+        foot = self.s.readline().decode('ascii')
 
         return frames, head, foot
     
@@ -116,3 +120,22 @@ class ESPDaq(object):
     
         
         
+def start_server(ip='localhost', port=9541, comport='/dev/ttyUSB0', baud=115200):
+    dev = ESPDaq(comport, baud)
+    print("Starting XML-RPC server")
+    print("IP: {}, port: {}".format(ip, port))
+    server = SimpleXMLRPCServer((ip, port), allow_none=True)
+    server.register_instance(dev)
+    server.serve_forever()
+
+
+if __name__ == "__main__":
+    print("Creating interface ...")
+    parser = argparse.ArgumentParser(description="ESPDaq server")
+    parser.add_argument("-i", "--ip", help="IP address of the XML-RPC server", default="localhost")
+    parser.add_argument("-p", "--port", help="XML-RPC server port", default=9541, type=int)
+    parser.add_argument("-s", "--comport", help="Serial port to be used", default="/dev/ttyUSB0")
+
+    args = parser.parse_args()
+    start_server(args.ip, args.port, args.comport)
+    
