@@ -28,17 +28,24 @@
 #define NMCP 4
 #define TOTAL_CHANS 32
 
+const uint32_t HEAD = 0xff495054;  // 0x49 -> 'I', 0x50 -> 'P', 0x54 -> 'T'
+const uint32_t FOOT = 0xff00ff00;
+
+struct DaqFrame{
+  uint32_t head;
+  uint32_t t;
+  uint32_t frame_num;
+  uint16_t raw[32];
+  uint32_t foot;
+};
+
+int AVG;
+int FPS;
+int PERIOD;
+const int FRAME_SIZE = sizeof (DaqFrame);
+
 const MCP3208::Channel chan_id[] = {MCP3208::Channel::SINGLE_0, MCP3208::Channel::SINGLE_1, MCP3208::Channel::SINGLE_2, MCP3208::Channel::SINGLE_3,
                            MCP3208::Channel::SINGLE_4, MCP3208::Channel::SINGLE_5, MCP3208::Channel::SINGLE_6, MCP3208::Channel::SINGLE_7};
-#define _USE_WIFI_
-                           
-#ifdef _USE_WIFI_
-#include "WiFi.h"
-const char *ssid = "durruti";
-const char *password = "ginzburglanda";
-#endif
-
-
 
 SPIClass spi1(VSPI);
 
@@ -68,38 +75,16 @@ void setup() {
   // initialize serial
   Serial.begin(115200);
 
-#ifdef _USE_WIFI_
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  Serial.print("Connecting to WiFi ..");
-  int code;
-  code  = WiFi.status();
-  while (code != WL_CONNECTED){
-    Serial.println(code);
-    delay(1000);
-    code  = WiFi.status();
-  }
-  Serial.println(WiFi.localIP());
-  
-#endif
-
-  
   spi1.beginTransaction(settings);
 
-
+  AVG = 100;  // # of samples to read before 
+  PERIOD = 100;
+  FPS = 1;
 }
 
 
-struct DaqFrame{
-  int32_t frame_num;
-  int32_t frame_time;
-  int32_t avg;  
-  int32_t period;
-  int32_t fps;
-  int16_t raw[32];
-};
 
-void read_frame(int16_t* raw16, int32_t avg)
+void read_frame(uint16_t* raw16, int32_t avg)
 {
   int32_t raw[32];
   uint32_t t1;
@@ -134,34 +119,125 @@ void read_frame(int16_t* raw16, int32_t avg)
 const int NSAMPLES=10;
 int16_t raw16[TOTAL_CHANS];
 
-void repl(){
-  
-}
 void loop() {
+
+  // Parse Command
+
+  char cmd; // Command mode '.', '*', '?' or '!'
+  char var; // Variable
+  int val;
+  String s;
 
   uint32_t t1;
   uint32_t t2;
-  // start sampling
-  Serial.println("Reading...");
-  t1 = micros();
-  read_frame(raw16, NSAMPLES);
-  t2 = micros();
-
-  // get analog value
-
-  for (int i = 0; i < TOTAL_CHANS; ++i)
+  uint32_t dt;
+  
+  DaqFrame frame;
+  frame.head = HEAD;
+  frame.foot = FOOT;
+  
+  
+  if (Serial.available() > 0)
   {
-    Serial.print(i);
-    Serial.print(") ");
-    Serial.println(raw16[i]);
+    cmd = Serial.read();
+    if (cmd != '.' && cmd != '*' && cmd != '?' && cmd != '!')
+    {
+      Serial.print("ERR - Unknown command mode -->");
+      Serial.println(cmd);
+      delay(50);
+      s = Serial.readString();   // Clear the buffer
+      return;
+    }
+
+    if (cmd == '!') {
+      // For now do nothing. It doesn't mean anything here!
+    } else if (cmd == '.'){ // Set variable value
+      delay(50);
+      var = Serial.read();
+      if (var == -1){
+        Serial.println("ERR - Command expected!");
+        delay(50);
+        s = Serial.readString();
+        return;
+      }
+      // Read the value  
+      delay(50);
+      s = Serial.readStringUntil('\n');
+      val = s.toInt();
+      if (var == 'A'){
+        if (val < 1 || val > 1000){
+          AVG = 1;
+        }else{
+          AVG = val;
+        }
+      } else if (var == 'P'){
+        if (val < 10 || val > 1000){
+          PERIOD=100;
+        } else {
+          PERIOD = val;
+        }
+      } else if (var == 'F'){
+        if (val < 1 || val > 30000)
+          FPS = 1;
+        else
+          FPS = val;
+      }
+      Serial.print(var);
+      Serial.println(val);
+      
+    }else if (cmd == '?'){  // Check the value of a variable
+      delay(50);
+      var = Serial.read();
+      if (var == -1){
+        Serial.println("ERR - Command expected!");
+        delay(50);
+        s = Serial.readString();
+        return;
+      }
+      s = Serial.readStringUntil('\n');
+      if (var == 'A')
+        Serial.println(AVG);
+      else if (var == 'P')
+        Serial.println(PERIOD);
+      else if (var == 'F')
+        Serial.println(FPS);
+      else{
+        Serial.print("ERR - Unkonw variable -->");
+        Serial.println(var);
+      }
+      
+    }else if (cmd == '*'){ // Read the values!!!
+      delay(50);
+      Serial.readString();
+      
+      Serial.println("START");
+      Serial.println(FPS);
+      for (int i = 0; i < FPS; ++i){
+        t1 = millis();
+        read_frame(frame.raw, AVG);        
+        frame.t = t1;
+        frame.frame_num = i;
+        Serial.write((char *) &frame, FRAME_SIZE);
+        dt = millis()-t1;
+        if ( dt < PERIOD){
+          delay(PERIOD - dt);
+        }
+        if (Serial.available() > 0){
+          cmd = Serial.read();
+          if (cmd=='!'){
+            delay(50);
+            Serial.println("STOP");
+            Serial.println(i);
+          }
+        }
+      }
+      Serial.println("END");
+            
+    }
     
   }
-  Serial.println("");
+  
+ 
+  return;
 
-  // sampling time
-  Serial.print("Sampling time: ");
-  Serial.print(static_cast<double>(t2 - t1) / 1000, 4);
-  Serial.println("ms");
-
-  delay(1000);
 }
