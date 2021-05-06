@@ -217,7 +217,7 @@ void loop() {
         read_frame(frame.raw, AVG);        
         frame.t = t1;
         frame.frame_num = i;
-        Serial.write((char *) &frame, FRAME_SIZE);
+        Serial.write((uint8_t *) &frame, FRAME_SIZE);
         dt = millis()-t1;
         if ( dt < PERIOD){
           delay(PERIOD - dt);
