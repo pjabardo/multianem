@@ -802,4 +802,30 @@ $EndComp
 Wire Wire Line
 	2950 2900 2950 2450
 Connection ~ 2950 2900
+$Comp
+L Connector_Generic:Conn_01x03 JREF1
+U 1 1 60BADDF4
+P 4550 3100
+F 0 "JREF1" H 4630 3142 50  0000 L CNN
+F 1 "Conn_01x03" H 4630 3051 50  0000 L CNN
+F 2 "TerminalBlock:TerminalBlock_bornier-3_P5.08mm" H 4550 3100 50  0001 C CNN
+F 3 "~" H 4550 3100 50  0001 C CNN
+	1    4550 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0102
+U 1 1 60BB09A8
+P 4350 3100
+F 0 "#PWR0102" H 4350 2850 50  0001 C CNN
+F 1 "GND" H 4355 2927 50  0000 C CNN
+F 2 "" H 4350 3100 50  0001 C CNN
+F 3 "" H 4350 3100 50  0001 C CNN
+	1    4350 3100
+	0    1    1    0   
+$EndComp
+Text Label 4350 3200 2    50   ~ 0
+Vref
+Text Label 4350 3000 1    50   ~ 0
+VDD
 $EndSCHEMATC
