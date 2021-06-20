@@ -117,6 +117,12 @@ class ESPDaq(object):
         for i in range(nfr):    
             E[i,:] = dados[i][0]
         return E, freq
+    def scanbin(self):
+        E, f = self.scan()
+        
+        return E.tobytes(), int(E.shape[0]), int(E.shape[1]), float(f)
+    
+        
     
         
         

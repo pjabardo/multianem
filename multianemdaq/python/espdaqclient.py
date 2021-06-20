@@ -7,25 +7,37 @@ class ESPDaqClient(object):
     def __init__(self, ip, port):
 
         self.dev = xmlrpc.client.ServerProxy("http://{}:{}".format(ip, port))
-
+        self.dev.avg(100)
+        self.dev.period(100)
+        self.dev.fps(1)
+        
 
     def avg(self, val=None):
         if val is None:
-            return self.dev.avg()
+            self._avg = self.dev.avg()
+            return self._avg
         else:
-            return self.dev.avg(val)
+            self.dev.avg(val)
+            self._avg = self.dev.avg()
+            return self._avg
         
     def fps(self, val=None):
         if val is None:
-            return self.dev.fps()
+            self._fps = self.dev.fps()
+            return self._fps
         else:
-            return self.dev.fps(val)
+            self.dev.fps(val)
+            self._fps = self.dev.fps()
+            return self._fps
         
     def period(self, val=None):
         if val is None:
-            return self.dev.period()
+            self._period = self.dev.period()
+            return self._period
         else:
-            return self.dev.period(val)
+            self.dev.period(val)
+            self._period = self.dev.period()
+            return self._period
     
     def scan_raw(self):
         
