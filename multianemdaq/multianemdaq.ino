@@ -209,9 +209,7 @@ void loop() {
     }else if (cmd == '*'){ // Read the values!!!
       delay(50);
       Serial.readString();
-      
-      Serial.println("START");
-      Serial.println(FPS);
+
       for (int i = 0; i < FPS; ++i){
         t1 = millis();
         read_frame(frame.raw, AVG);        
@@ -231,7 +229,6 @@ void loop() {
           }
         }
       }
-      Serial.println("END");
             
     }
     

@@ -11,12 +11,12 @@ class ESPDaq(object):
 
     def __init__(self, dev='/dev/ttyUSB0', speed=115200):
 
-        self.s = serial.Serial(dev, speed, timeout=1)
+        self.s = serial.Serial(dev, speed, timeout=100)
         self.dev = dev
         self.speed = speed
-        self._avg = 100
-        self._period = 100
-        self._fps = 1
+        self.avg(100)
+        self.period(100)
+        self.fps(1)
     def close(self):
         self.s.close()
         return None
@@ -73,20 +73,17 @@ class ESPDaq(object):
      
     
     def scan_raw(self):
+        self.s.flush()
         nframes = self.fps()
 
         frames = []
-
+        
         self.s.write(b'*\n')
         time.sleep(0.05)
-        head = self.s.readline().decode('ascii')
-        nframes = int(self.s.readline().strip())
         for i in range(nframes):
             frames.append(self.s.read(80))
 
-        foot = self.s.readline().decode('ascii')
-
-        return frames, head, foot
+        return frames
     
     def decode_frame(self, frame):
         h = np.frombuffer(frame, np.uint32, 1, 0)[0]
@@ -97,7 +94,7 @@ class ESPDaq(object):
         return E, t, num, h, f
     def scan(self):
 
-        x, h, f = self.scan_raw()
+        x = self.scan_raw()
 
         dados = [self.decode_frame(y) for y in x]
         nfr = len(x)
