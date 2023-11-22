@@ -7,8 +7,8 @@
 
 #include "espmcpdaq.h"
 
-//#define _USE_SERIAL_
-#define _USE_WIFI_
+#define _USE_SERIAL_
+//#define _USE_WIFI_
 
 #define SPI_MOSI1   23       
 #define SPI_MISO1   19

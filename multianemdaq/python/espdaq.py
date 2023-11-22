@@ -3,20 +3,28 @@
 import serial
 import time
 import numpy as np
+import threading
 import argparse
 
 from xmlrpc.server import SimpleXMLRPCServer
 
+
+
 class ESPDaq(object):
 
     def __init__(self, dev='/dev/ttyUSB0', speed=115200):
-
+        
         self.s = serial.Serial(dev, speed, timeout=100)
         self.dev = dev
         self.speed = speed
         self.avg(100)
         self.period(100)
         self.fps(1)
+        self.frames = []
+        self.thrd = None
+        self.acquiring = False
+        self.nread = 0
+        self.stopaq = False
     def close(self):
         self.s.close()
         return None
@@ -71,20 +79,57 @@ class ESPDaq(object):
             self.s.write(cmd)
             return self.s.readline().decode('ascii')
      
+    def stop(self):
+        self.stopaq = True
+        return
     
     def scan_raw(self):
         self.s.flush()
         nframes = self.fps()
 
-        frames = []
-        
+        self.frames = []
+        self.nread = 0
         self.s.write(b'*\n')
         time.sleep(0.05)
+        self.stopaq = False
         for i in range(nframes):
-            frames.append(self.s.read(80))
+            self.frames.append(self.s.read(80))
+            self.nread += 1
+            if self.stopaq:
+                self.s.write(b"!")
+                time.sleep(0.1)
+                self.s.readline() # STOP
+                self.s.readline() # i
+                time.sleep(1)
+                self.s.flush()
+                self.s.close()
+                self.s = serial.Serial(self.dev, self.speed, timeout=100)
+                self.s.flush()
+                break
+        return self.frames
 
-        return frames
+    def start(self):
+        if self.acquiring:
+            raise RuntimeError("Illegal operation: System is already acquiring!")
+        self.thrd = EspMcpThread(self)
+        self.thrd.start()
+        self.acquiring = True
+    def acquire_raw(self):
+        self.scan_raw(self)
+        return self.frames
+    def read_raw(self):
+        if self.thrd is not None:
+            self.thrd.join()
+            self.thrd = None
+            self.acquiring = False
+        return self.frames
+            
+    def isacquiring(self):
+        return self.acquiring
+    def samplesread(self):
+        return self.nread
     
+            
     def decode_frame(self, frame):
         h = np.frombuffer(frame, np.uint32, 1, 0)[0]
         t = np.frombuffer(frame, np.uint32, 1, 4)[0]
@@ -120,10 +165,17 @@ class ESPDaq(object):
         return E.tobytes(), int(E.shape[0]), int(E.shape[1]), float(f)
     
         
+class EspMcpThread(threading.Thread):
+    def __init__(self, dev):
+        threading.Thread.__init__(self)
+        self.dev = dev
+        return
+    def run(self):
+        self.dev.scan_raw()
     
         
         
-def start_server(ip='localhost', port=9541, comport='/dev/ttyUSB0', baud=115200):
+def start_server(ip='localhost', port=9523, comport='/dev/ttyUSB0', baud=115200):
     dev = ESPDaq(comport, baud)
     print("Starting XML-RPC server")
     print("IP: {}, port: {}".format(ip, port))
@@ -136,7 +188,7 @@ if __name__ == "__main__":
     print("Creating interface ...")
     parser = argparse.ArgumentParser(description="ESPDaq server")
     parser.add_argument("-i", "--ip", help="IP address of the XML-RPC server", default="localhost")
-    parser.add_argument("-p", "--port", help="XML-RPC server port", default=9541, type=int)
+    parser.add_argument("-p", "--port", help="XML-RPC server port", default=9523, type=int)
     parser.add_argument("-s", "--comport", help="Serial port to be used", default="/dev/ttyUSB0")
 
     args = parser.parse_args()
