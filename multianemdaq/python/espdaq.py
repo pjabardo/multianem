@@ -71,7 +71,7 @@ class ESPDaq(object):
             self._fps = int(b)
             return self._fps
         else:
-            if val < 1 or val > 30000:
+            if val < 1 or val > 60000:
                 val = 1
             val = int(val)
             self._fps = val
@@ -163,6 +163,14 @@ class ESPDaq(object):
         E, f = self.scan()
         
         return E.tobytes(), int(E.shape[0]), int(E.shape[1]), float(f)
+    def status(self):
+        return "OK"
+    def reopen(self):
+        self.s.close()
+        time.sleep(1)
+        self.s = serial.Serial(self.dev, self.speed, timeout=100)
+        return "OK"
+    
     
         
 class EspMcpThread(threading.Thread):
